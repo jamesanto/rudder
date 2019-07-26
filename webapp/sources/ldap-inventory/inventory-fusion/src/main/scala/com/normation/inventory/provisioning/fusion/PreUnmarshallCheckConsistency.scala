@@ -52,7 +52,7 @@ import zio.syntax._
 class PreUnmarshallCheckConsistency extends PreUnmarshall {
   override val name = "post_process_inventory:check_consistency"
 
-  implicit class ToInconsistency(msg: String) {
+  implicit class ToInconsistency(val msg: String) extends AnyVal {
     def inconsistency = InventoryError.Inconsistency(msg).fail
   }
 

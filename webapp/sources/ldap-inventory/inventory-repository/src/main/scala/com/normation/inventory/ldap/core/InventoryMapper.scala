@@ -72,14 +72,14 @@ object InventoryMappingResult {
 
   type InventoryMappingPure[T] = Either[InventoryMappingRudderError, T]
 
-  implicit class RequiredAttrToPure(entry: LDAPEntry) {
+  implicit class RequiredAttrToPure(val entry: LDAPEntry) extends AnyVal {
     def required(attribute: String): InventoryMappingPure[String] = entry(attribute) match {
       case None    => Left(MissingMandatoryAttribute(attribute, entry))
       case Some(x) => Right(x)
     }
   }
 
-  implicit class RequiredTypedAttrToPure(entry: LDAPEntry) {
+  implicit class RequiredTypedAttrToPure(val entry: LDAPEntry) extends AnyVal {
     def requiredAs[T](f: LDAPEntry => String => Option[T], attribute: String): InventoryMappingPure[T] = f(entry)(attribute) match {
       case None    => Left(MissingMandatoryAttribute(attribute, entry))
       case Some(x) => Right(x)
@@ -653,13 +653,13 @@ class InventoryMapper(
      * {"name":"propkey","value": JVALUE}
      * with JVALUE either a simple type (string, int, etc) or a valid JSON
      */
-    implicit class Serialise(cs: CustomProperty) {
+    implicit class Serialise(val cs: CustomProperty) extends AnyVal {
       def toJson: String = {
         Serialization.write(cs)(DefaultFormats)
       }
     }
 
-    implicit class Unserialize(json: String) {
+    implicit class Unserialize(val json: String) extends AnyVal {
       def toCustomProperty: IOResult[CustomProperty] = {
         implicit val formats = DefaultFormats
         IOResult.effect(Serialization.read[CustomProperty](json))

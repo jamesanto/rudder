@@ -75,14 +75,14 @@ object ComplianceDebugLogger extends Logger {
 
   def node(id: NodeId) : Logger = nodeCache.get(id.value)
 
-  implicit class NodeConfigIdInfoToLog(n: NodeConfigIdInfo) {
+  implicit class NodeConfigIdInfoToLog(val n: NodeConfigIdInfo) extends AnyVal {
     val toLog: String = s"${n.configId.value}/[${n.creation}-${n.endOfLife.fold("now")(_.toString)}]"
   }
-  implicit class NodeExpectedConfigToLog(n: NodeExpectedReports) {
+  implicit class NodeExpectedConfigToLog(val n: NodeExpectedReports) extends AnyVal {
     val toLog: String = s"${n.nodeConfigId.value}/[${n.beginDate}-${n.endDate.fold("now")(_.toString)}]"
   }
 
-  implicit class RunAndConfigInfoToLog(c: RunAndConfigInfo) {
+  implicit class RunAndConfigInfoToLog(val c: RunAndConfigInfo) extends AnyVal {
 
     val logDetails: String = c match {
       case NoRunNoExpectedReport =>
@@ -141,7 +141,7 @@ object ComplianceDebugLogger extends Logger {
     val toLog: String = logName + ": " + logDetails
   }
 
-  implicit class AgentRunConfigurationToLog(info: (NodeId, ComplianceMode, ResolvedAgentRunInterval)) {
+  implicit class AgentRunConfigurationToLog(val info: (NodeId, ComplianceMode, ResolvedAgentRunInterval)) extends AnyVal {
 
     private[this] def log(c: ComplianceMode, r: ResolvedAgentRunInterval): String = {
       val h = c.mode match {

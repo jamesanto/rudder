@@ -60,7 +60,7 @@ import scala.xml.XML
 @RunWith(classOf[JUnitRunner])
 class TestPreUnmarshaller extends Specification {
 
-  private[this] implicit class TestParser(pre: PreUnmarshall) {
+  private[this] implicit class TestParser(val pre: PreUnmarshall) extends AnyVal {
 
     def fromXml(checkName:String,is:InputStream) : IOResult[NodeSeq] = {
       Task.effect(XML.load(is)).mapError(SystemError("error in test", _))

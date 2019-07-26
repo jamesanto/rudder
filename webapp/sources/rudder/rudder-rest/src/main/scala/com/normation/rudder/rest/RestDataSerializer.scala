@@ -571,7 +571,7 @@ object ApiAccountSerialisation {
   implicit val formats = Serialization.formats(NoTypeHints)
 
 
-  implicit class Json(account: ApiAccount) {
+  implicit class Json(val account: ApiAccount) extends AnyVal {
 
     val (expirationDate, authzType, acl) :  (Option[String],Option[String],Option[List[JsonApiAcl]]) = {
       account.kind match {

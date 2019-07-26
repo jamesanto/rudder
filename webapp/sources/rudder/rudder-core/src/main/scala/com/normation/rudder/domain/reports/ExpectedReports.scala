@@ -277,7 +277,7 @@ object ExpectedReportsSerialisation {
 
     implicit val formats = DefaultFormats
 
-    implicit class ToValidInt(b: BigInt) {
+    implicit class ToValidInt(val b: BigInt) extends AnyVal {
       def toValidInt = if(b.isValidInt) b.toInt else throw new NumberFormatException(s"${b.toString} is not a valid integer")
     }
 
@@ -456,7 +456,7 @@ object ExpectedReportsSerialisation {
     }
   }
 
-  implicit class NodeToJson(n: NodeExpectedReports) {
+  implicit class NodeToJson(val n: NodeExpectedReports) extends AnyVal {
     def toJValue() = {
       jsonNodeExpectedReports(JsonNodeExpectedReports(n.modes, n.ruleExpectedReports, n.overrides))
     }

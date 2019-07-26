@@ -82,7 +82,7 @@ class InfoApi(
       ("status" -> {if (version.deprecated) "deprecated" else "maintained"})
     }
 
-    implicit class EndpointToJValue(endpoint: EndpointInfo) {
+    implicit class EndpointToJValue(val endpoint: EndpointInfo) extends AnyVal {
       def json: JValue = {
         val versions = endpoint.versions.map(_.value).toList.sorted.mkString("[",",","]")
         val action   = endpoint.action.name.toUpperCase()
@@ -151,7 +151,7 @@ class InfoApi(
         ("status" -> {if (version.deprecated) "deprecated" else "maintained"})
       }
 
-      implicit class EndpointToJValue(endpoint: Endpoint) {
+      implicit class EndpointToJValue(val endpoint: Endpoint) extends AnyVal {
         def json: JValue = {
           val path = "/" + endpoint.prefix.value + "/" + endpoint.schema.path.value
           val action = endpoint.schema.action.name.toUpperCase()

@@ -38,7 +38,7 @@ object syntax {
   type LDAPResult = ULDAPResult
 
 
-  implicit class SearchScopeTonbound(s: SearchScope) {
+  implicit class SearchScopeTonbound(val s: SearchScope) extends AnyVal {
     def toUnboundid = {
       import com.unboundid.ldap.sdk.SearchScope._
       s match {
@@ -50,7 +50,7 @@ object syntax {
     }
   }
 
-  implicit class BooleanToLdapString(b: Boolean) {
+  implicit class BooleanToLdapString(val b: Boolean) extends AnyVal {
     def toLDAPString: String = LDAPBoolean(b).toLDAPString
   }
 

@@ -822,7 +822,7 @@ object BuildNodeConfiguration extends Loggable {
    * Utility class that helps deduplicate same failures in a chain
    * of failure when using bestEffort.
    */
-  implicit class DedupFailure[T](box: Box[T]) {
+  implicit class DedupFailure[T](val box: Box[T]) extends AnyVal {
     def dedupFailures(failure: String, transform: String => String = identity) = {
       box match { //dedup error messages
           case Full(res)   => Full(res)

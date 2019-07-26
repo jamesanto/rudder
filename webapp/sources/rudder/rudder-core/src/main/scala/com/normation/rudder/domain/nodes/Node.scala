@@ -318,7 +318,7 @@ object JsonSerialisation {
   import net.liftweb.json._
   import net.liftweb.json.JsonDSL._
 
-  implicit class JsonNodeProperty(x: NodeProperty) {
+  implicit class JsonNodeProperty(val x: NodeProperty) extends AnyVal {
     def toJson(): JObject = (
         ( "name"     -> x.name  )
       ~ ( "value"    -> x.value )
@@ -326,7 +326,7 @@ object JsonSerialisation {
     )
   }
 
-  implicit class JsonNodeProperties(props: Seq[NodeProperty]) {
+  implicit class JsonNodeProperties(val props: Seq[NodeProperty]) extends AnyVal {
     implicit val formats = DefaultFormats
 
     def dataJson(x: NodeProperty) : JField = {
@@ -342,14 +342,14 @@ object JsonSerialisation {
     }
   }
 
-  implicit class JsonParameter(x: ParameterEntry) {
+  implicit class JsonParameter(val x: ParameterEntry) extends AnyVal {
     def toJson(): JObject = (
         ( "name"     -> x.parameterName )
       ~ ( "value"    -> x.escapedValue  )
     )
   }
 
-  implicit class JsonParameters(parameters: Set[ParameterEntry]) {
+  implicit class JsonParameters(val parameters: Set[ParameterEntry]) extends AnyVal {
     implicit val formats = DefaultFormats
 
     def dataJson(x: ParameterEntry) : JField = {

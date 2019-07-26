@@ -79,7 +79,7 @@ object InventoryProcessStatus {
 
 
 object StatusLog {
-  implicit class LogMessage(status: InventoryProcessStatus) {
+  implicit class LogMessage(val status: InventoryProcessStatus) extends AnyVal {
     def msg: String = status match {
       case InventoryProcessStatus.MissingSignature(report) =>
         s"Rejecting Inventory '${report.name}' for Node '${report.node.main.id.value}' because its signature is missing. " +

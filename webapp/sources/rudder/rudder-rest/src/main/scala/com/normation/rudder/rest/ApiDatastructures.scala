@@ -229,10 +229,10 @@ trait EndpointSchema0 extends EndpointSchema {
 object EndpointSchema {
   object syntax {
     // syntaxt to build endpoints
-    implicit class BuildPath(action: HttpAction) {
+    implicit class BuildPath(val action: HttpAction) extends AnyVal {
       def /(s: String) = (action, ApiPath.of(s))
     }
-    implicit class AddPath(pair: (HttpAction, ApiPath)) {
+    implicit class AddPath(val pair: (HttpAction, ApiPath)) extends AnyVal {
       def /(s: String) = (pair._1, pair._2 / s)
       def /(path: ApiPath) = (pair._1, ApiPath(pair._2.parts.concatNel(path.parts)))
     }
