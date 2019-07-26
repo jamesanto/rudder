@@ -165,7 +165,7 @@ object AgentInfoSerialisation {
 
   import net.liftweb.json._
 
-  implicit class ToJson(agent: AgentInfo) {
+  implicit class ToJson(val agent: AgentInfo) extends AnyVal {
 
     def toJsonString =
       compactRender(

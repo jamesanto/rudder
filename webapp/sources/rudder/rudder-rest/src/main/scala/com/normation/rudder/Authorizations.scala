@@ -207,7 +207,7 @@ sealed trait Role {
 }
 object Role {
   import com.normation.rudder.{AuthorizationType => A}
-  private implicit class ToRights[T <: AuthorizationType](authorizations: Set[T]) {
+  private implicit class ToRights[T <: AuthorizationType](val authorizations: Set[T]) extends AnyVal {
     def toRights: Rights = new Rights(authorizations.toSeq: _*)
   }
   def allRead = A.allKind.collect { case x: ActionType.Read => x }

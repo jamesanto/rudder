@@ -519,7 +519,7 @@ final case class JsonRunHook(
 )
 
 object JsonRunHookSer {
-  implicit class ToJson(h: NodeRunHook) {
+  implicit class ToJson(val h: NodeRunHook) extends AnyVal {
     import net.liftweb.json._
     def jsonParam: String = {
       val jh = JsonRunHook(

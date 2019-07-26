@@ -69,7 +69,7 @@ class TestSignatureService extends Specification with Loggable {
     }.mapError(e => SystemError(s"Error opening '${path}'", e))
   }
 
-  private[this] implicit class TestParser(parser: FusionReportUnmarshaller) {
+  private[this] implicit class TestParser(val parser: FusionReportUnmarshaller) extends AnyVal {
     def parse(reportRelativePath: String): IOResult[InventoryReport] = {
       ZIO.bracket(getInputStream(reportRelativePath))(is => Task.effect(is.close).run) { is =>
         parser.fromXml("report", is)

@@ -58,21 +58,21 @@ trait BoxSpecMatcher extends Specification with Loggable {
   /*
    * helpers for Box
    */
-  implicit class BoxMustFails[T](t: Box[T]) {
+  implicit class BoxMustFails[T](val t: Box[T]) extends AnyVal {
     def mustFails(): MatchResult[Any] = t match {
       case f: Failure => ok(s"Got a Failure as expected: ${f.messageChain}")
       case x          => ko(s"I was expecting a Failure box and got ${x}")
     }
   }
 
-  implicit class BoxMustEmpty[T](t: Box[T]) {
+  implicit class BoxMustEmpty[T](val t: Box[T]) extends AnyVal {
     def mustEmpty(): MatchResult[Any] = t match {
       case Empty => ok(s"Got Empty as expected")
       case x     => ko(s"I was expecting an Empty box and got ${x}")
     }
   }
 
-  implicit class BoxMustEquals[T](t: Box[T]) {
+  implicit class BoxMustEquals[T](val t: Box[T]) extends AnyVal {
     private[this] def matchRes(f: T => MatchResult[Any]) = t match {
       case f: Failure =>
         val msg = s"I wasn't expecting the failure: ${f.messageChain}"

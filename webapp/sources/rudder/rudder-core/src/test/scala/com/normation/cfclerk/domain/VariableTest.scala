@@ -57,7 +57,7 @@ class VariableTest extends Specification {
   def variableSpecParser = new VariableSpecParser()
 
 
-  implicit class EitherToThrow[T](res: Either[LoadTechniqueError, T]) {
+  implicit class EitherToThrow[T](val res: Either[LoadTechniqueError, T]) extends AnyVal {
     def orThrow = res match {
       case Right(value) => value
       case Left(error)  => throw new IllegalArgumentException(s"Variable error in test: ${error.fullMsg}")

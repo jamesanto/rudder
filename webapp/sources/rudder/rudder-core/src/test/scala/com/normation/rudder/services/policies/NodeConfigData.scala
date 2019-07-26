@@ -464,10 +464,10 @@ class TestNodeConfiguration() {
   // set up root node configuration
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //just a little sugar to stop hurting my eyes with new File(blablab, plop)
-  implicit class PathString(root: String) {
+  implicit class PathString(val root: String) extends AnyVal {
     def /(child: String) = new File(root, child)
   }
-  implicit class PathString2(root: File) {
+  implicit class PathString2(val root: File) extends AnyVal {
     def /(child: String) = new File(root, child)
   }
 
@@ -616,7 +616,7 @@ class TestNodeConfiguration() {
   //
   //root has 4 system directive, let give them some variables
   //
-  implicit class UnsafeGet(t: Option[Technique]) {
+  implicit class UnsafeGet(val t: Option[Technique]) extends AnyVal {
     def unsafeGet = t.getOrElse(throw new RuntimeException("Bad init for test"))
   }
 

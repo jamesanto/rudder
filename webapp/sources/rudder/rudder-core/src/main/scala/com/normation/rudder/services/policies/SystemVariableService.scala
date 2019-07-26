@@ -88,7 +88,7 @@ final case class ResolvedRudderServerRole(
 object SystemVariableService {
 
   // we use that variable to take care of an unexpected missing variable.
-  implicit class MissingSystemVariableCatch(optVar: Either[MissingSystemVariable, SystemVariableSpec]) {
+  implicit class MissingSystemVariableCatch(val optVar: Either[MissingSystemVariable, SystemVariableSpec]) extends AnyVal {
     def toVariable(initValues: Seq[String] = Seq()): SystemVariable = (optVar match {
       case Left(MissingSystemVariable(name)) =>
         ApplicationLogger.error(s"System variable '${name}' is missing. This is most likely denote a desynchronisation between your system variable and " +

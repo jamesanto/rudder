@@ -1209,7 +1209,7 @@ object ExecutionBatch extends Loggable {
   }
 
 
-  implicit class ToMessageStatusReport(r: Reports) {
+  implicit class ToMessageStatusReport(val r: Reports) extends AnyVal {
     // build the resulting reportType from a report, checking that the
     // policy mode is the one expected
     def toMessageStatusReport(mode: PolicyMode) = {

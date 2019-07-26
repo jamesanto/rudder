@@ -56,7 +56,7 @@ object LoadTechniqueError {
 
 object implicits {
 
-  implicit class ChainEither[E <: LoadTechniqueError, T](res: Either[E, T]) {
+  implicit class ChainEither[E <: LoadTechniqueError, T](val res: Either[E, T]) extends AnyVal {
     def chain(msg: String): Either[LoadTechniqueError, T] = {
       res match {
         case Right(v)  => Right(v)

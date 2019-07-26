@@ -62,7 +62,7 @@ import zio._
 @RunWith(classOf[JUnitRunner])
 class TestReportParsing extends Specification with Loggable {
 
-  private[this] implicit class TestParser(parser: FusionReportUnmarshaller) {
+  private[this] implicit class TestParser(val parser: FusionReportUnmarshaller) extends AnyVal {
     def parse(reportRelativePath: String): IOResult[InventoryReport] = {
       val url = this.getClass.getClassLoader.getResource(reportRelativePath)
       if(null == url) throw new NullPointerException(s"Resource with relative path '${reportRelativePath}' is null (missing resource? Spelling? Permissions?)")

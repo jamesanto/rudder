@@ -50,14 +50,14 @@ class QSRegexQueryParserTest extends Specification {
   import com.normation.rudder.services.quicksearch.QSObject._
   import com.normation.rudder.services.quicksearch.QSAttribute._
 
-  implicit class BoxMustFails[T](t: Box[T]) {
+  implicit class BoxMustFails[T](val t: Box[T]) extends AnyVal {
     def mustFails(): MatchResult[Any] = t match {
       case f: Failure => ok("Got a Failure as expected")
       case x          => ko(s"I was expecting a Failure box and got ${x}")
     }
   }
 
-  implicit class BoxMustEquals[T](t: Box[T]) {
+  implicit class BoxMustEquals[T](val t: Box[T]) extends AnyVal {
     def mustFull(res: T): MatchResult[Any] = t match {
       case f: Failure => ko(s"I wasn't explecting the failure: ${f.messageChain}")
       case Empty      => ko(s"How can I get an Empty!")

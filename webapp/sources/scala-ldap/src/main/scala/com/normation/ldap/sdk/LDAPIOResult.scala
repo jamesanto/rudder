@@ -47,20 +47,20 @@ object LDAPIOResult{
   type LDAPIOResult[T] = IO[LDAPRudderError, T]
 
   // transform an Option[T] into an error
-  implicit class StrictOption[T](opt: LDAPIOResult[Option[T]]) {
+  implicit class StrictOption[T](val opt: LDAPIOResult[Option[T]]) extends AnyVal {
     def notOptional(msg: String) = IO.require[LDAPRudderError, T](LDAPRudderError.Consistancy(msg))(opt)
   }
 
   // same than above for a Rudder error from a string
-  implicit class ToFailureMsg(e: String) {
+  implicit class ToFailureMsg(val e: String) extends AnyVal {
     def fail = IO.fail(LDAPRudderError.Consistancy(e))
   }
 
-  implicit class ValidatedToLdapError[T](res: ZIO[Any, NonEmptyList[LDAPRudderError], List[T]]) {
+  implicit class ValidatedToLdapError[T](val res: ZIO[Any, NonEmptyList[LDAPRudderError], List[T]]) extends AnyVal {
     def toLdapResult: LDAPIOResult[List[T]] = res.mapError(errors => LDAPRudderError.Accumulated(errors))
   }
 
-  implicit class EitherToLdapError[T](res: Either[RudderError, T]) {
+  implicit class EitherToLdapError[T](val res: Either[RudderError, T]) extends AnyVal {
     def toLdapResult: LDAPIOResult[T] = {
       res match {
         case Left(error) => LDAPRudderError.Consistancy(error.msg).fail

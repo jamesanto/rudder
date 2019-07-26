@@ -174,7 +174,7 @@ class RestQuicksearch (
     , returnedNumber : Int
   )
 
-  private[this] implicit class JsonResultTypeSummary(t: ResultTypeSummary) {
+  private[this] implicit class JsonResultTypeSummary(val t: ResultTypeSummary) extends AnyVal {
 
     val desc = if(t.originalNumber <= t.returnedNumber) {
        s"${t.originalNumber} found"
@@ -191,7 +191,7 @@ class RestQuicksearch (
     }
   }
 
-  private[this] implicit class JsonSearchResult(r: QuickSearchResult) {
+  private[this] implicit class JsonSearchResult(val r: QuickSearchResult) extends AnyVal {
     import com.normation.inventory.domain.NodeId
     import com.normation.rudder.domain.nodes.NodeGroupId
     import com.normation.rudder.domain.parameters.ParameterName

@@ -162,7 +162,7 @@ object JsonCompliance {
 
   //global compliance
 
-  implicit class JsonGlobalCompliance(optCompliance: Option[(ComplianceLevel, Long)]) {
+  implicit class JsonGlobalCompliance(val optCompliance: Option[(ComplianceLevel, Long)]) extends AnyVal {
     def toJson: JValue = {
       optCompliance match {
         case Some((details, value)) =>
@@ -180,7 +180,7 @@ object JsonCompliance {
   }
 
 
-  implicit class JsonbyRuleCompliance(rule: ByRuleRuleCompliance) {
+  implicit class JsonbyRuleCompliance(val rule: ByRuleRuleCompliance) extends AnyVal {
     def toJsonV6 = (
         ("id" -> rule.id.value)
       ~ ("name" -> rule.name)
@@ -254,7 +254,7 @@ object JsonCompliance {
 
   }
 
-  implicit class JsonByNodeCompliance(n: ByNodeNodeCompliance) {
+  implicit class JsonByNodeCompliance(val n: ByNodeNodeCompliance) extends AnyVal {
     def toJsonV6 = (
         ("id" -> n.id.value)
       ~ ("compliance" -> n.compliance.complianceWithoutPending)

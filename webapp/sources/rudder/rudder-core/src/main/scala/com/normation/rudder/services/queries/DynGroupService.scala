@@ -168,12 +168,12 @@ class CheckPendingNodeInDynGroups(
     NodeLogger.PendingNode.Policies.debug(s"Checking dyn-groups belonging for nodes [${nodeIds.map(_.value).mkString(", ")}]:${groups.map(g => s"${g.id.value}: ${g.name}").sorted.mkString("{", "}{", "}")}")
 
     // for debuging message
-    implicit class DynGroupsToString(gs: List[(NodeGroupId, Set[NodeId])]) {
+    implicit class DynGroupsToString(val gs: List[(NodeGroupId, Set[NodeId])]) extends AnyVal {
       def show: String = gs.map { case (id, nodes) =>
         id.value + ":" + nodes.map(_.value).mkString(",")
       }.mkString("[", "][", "]")
     }
-    implicit class ResToString(gs: List[DynGroup]) {
+    implicit class ResToString(val gs: List[DynGroup]) extends AnyVal {
       def show: String = gs.map { case DynGroup(id, dep, nodes, q, inc) =>
         id.value + ":" + nodes.size + "{"+dep.map(_.value).mkString(",")+"}"
       }.mkString("[", "][", "]")

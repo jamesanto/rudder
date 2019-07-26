@@ -759,7 +759,7 @@ class PasswordField(
 
   //add a mapping between algo names and what is displayed, because having
   //linux-... or aix-... does not make sense in that context
-  implicit class AlgoToDisplayName(a: HashAlgoConstraint) {
+  implicit class AlgoToDisplayName(val a: HashAlgoConstraint) extends AnyVal {
     import com.normation.cfclerk.domain.HashAlgoConstraint._
 
     def name = a match {

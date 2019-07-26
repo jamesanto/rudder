@@ -240,7 +240,7 @@ object QSObject {
   // - then by name
   def sortQSObject(a: QSObject, b:QSObject): Boolean = {
 
-    implicit class QSObjectOrder(o: QSObject) {
+    implicit class QSObjectOrder(val o: QSObject) extends AnyVal {
       def order() = o match {
         case Common    => 0
         case Node      => 1

@@ -66,11 +66,11 @@ final case class SystemError(cause: Throwable) extends RudderError {
 @RunWith(classOf[JUnitRunner])
 class TestInventory extends Specification {
 
-  implicit class RunThing[E,T](thing: ZIO[Any,E,T]) {
+  implicit class RunThing[E,T](val thing: ZIO[Any,E,T]) extends AnyVal {
     def testRun = ZioRuntime.unsafeRun(thing.either)
   }
 
-  implicit class TestIsOK[E,T](thing: ZIO[Any,E,T]) {
+  implicit class TestIsOK[E,T](val thing: ZIO[Any,E,T]) extends AnyVal {
     def isOK = thing.testRun must beRight
   }
 

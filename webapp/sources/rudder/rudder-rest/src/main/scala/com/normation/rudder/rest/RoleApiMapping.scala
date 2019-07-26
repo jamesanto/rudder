@@ -77,7 +77,7 @@ class ExtensibleAuthorizationApiMapping(base: List[AuthorizationApiMapping]) ext
 
 
 object AuthorizationApiMapping {
-  implicit class ToAuthz(api: EndpointSchema) {
+  implicit class ToAuthz(val api: EndpointSchema) extends AnyVal {
     def x: ApiAclElement = AuthzForApi(api)
   }
 
