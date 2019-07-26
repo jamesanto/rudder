@@ -123,23 +123,23 @@ object errors {
    * Chain multiple error. You will loose the specificity of the
    * error type doing so.
    */
-  implicit class IOChainError[R, E <: RudderError, A](res: ZIO[R, E, A]) {
+  implicit class IOChainError[R, E <: RudderError, A](val res: ZIO[R, E, A]) extends AnyVal {
     def chainError(hint: String): ZIO[R, RudderError, A] = res.mapError(err => Chained(hint, err))
   }
 
-  implicit class PureChainError[R, E <: RudderError, A](res: Either[E, A]) {
+  implicit class PureChainError[R, E <: RudderError, A](val res: Either[E, A]) extends AnyVal {
     def chainError(hint: String): Either[RudderError, A] = res.leftMap(err => Chained(hint, err))
   }
 
   /*
    * A mapper from PureResult to IOResult
    */
-  implicit class PureToIoResult[A](res: PureResult[A]) {
+  implicit class PureToIoResult[A](val res: PureResult[A]) extends AnyVal {
     def toIO: IOResult[A] = ZIO.fromEither(res)
   }
 
   // not optional - mandatory presence of an object
-  implicit class OptionToIoResult[A](res: Option[A]) {
+  implicit class OptionToIoResult[A](val res: Option[A]) extends AnyVal {
     def notOptional(error: String) = res match {
       case None    => Inconsistancy(error).fail
       case Some(x) => x.succeed
@@ -147,14 +147,14 @@ object errors {
   }
 
   // also with the flatmap included to avoid a combinator
-  implicit class MandatoryOptionIO[R, E <: RudderError, A](res: ZIO[R, E, Option[A]]) {
+  implicit class MandatoryOptionIO[R, E <: RudderError, A](val res: ZIO[R, E, Option[A]]) extends AnyVal {
     def notOptional(error: String) = res.flatMap( _.notOptional(error))
   }
 
   /**
    * Accumulate results of a ZIO execution in a ValidateNel
    */
-  implicit class AccumulateErrorsNEL[A](in: Iterable[A]) {
+  implicit class AccumulateErrorsNEL[A](val in: Iterable[A]) extends AnyVal {
     private def transform[R, E, B](seq: ZIO[R, Nothing, List[Either[E, B]]]) = {
       seq.flatMap { list =>
         val accumulated = list.traverse( _.toValidatedNel)
@@ -180,7 +180,7 @@ object errors {
   /*
    * And a version that translate it to RudderError Accumulated.
    */
-  implicit class AccumulateErrors[A](in: Iterable[A]) {
+  implicit class AccumulateErrors[A](val in: Iterable[A]) extends AnyVal {
     /*
      * Execute sequentially and accumulate errors
      */
@@ -224,7 +224,7 @@ object errors {
     }
   }
 
-  implicit class BoxToEither[E <: RudderError, A](res: Box[A]) {
+  implicit class BoxToEither[E <: RudderError, A](val res: Box[A]) extends AnyVal {
     import cats.instances.either._
     def toPureResult: PureResult[A] = BoxUtil.fold[E, A, PureResult](
       err => Left(err)
@@ -232,7 +232,7 @@ object errors {
     )(res)
   }
 
-  implicit class BoxToIO[E <: RudderError, A](res: => Box[A]) {
+  implicit class BoxToIO[E <: RudderError, A](val res: => Box[A]) extends AnyVal {
     import _root_.zio.interop.catz._
     def toIO: IOResult[A] = IOResult.effect(res).flatMap(x => BoxUtil.fold[E, A, IOResult](
       err => err.fail
@@ -273,7 +273,7 @@ object zio {
   /*
    * When porting a class is too hard
    */
-  implicit class UnsafeRun[A](io: IOResult[A]) {
+  implicit class UnsafeRun[A](val io: IOResult[A]) extends AnyVal {
     def runNow: A = ZioRuntime.runNow(io)
   }
 
@@ -289,7 +289,7 @@ object box {
   /*
    * Opposite to "toIO"
    */
-  implicit class IOToBox[A](io: IOResult[A]) {
+  implicit class IOToBox[A](val io: IOResult[A]) extends AnyVal {
     def errToFailure(err: RudderError): Failure = {
       err match {
         case Chained(msg, cause ) => new Failure(msg, Empty, Full(errToFailure(cause)))
@@ -307,7 +307,7 @@ object box {
    * The same for either - not sure it should go there, but
    * we are likely to use both "toBox" in the same files
    */
-  implicit class EitherToBox[E <: RudderError, A](either: Either[E, A]) {
+  implicit class EitherToBox[E <: RudderError, A](val either: Either[E, A]) extends AnyVal {
     def toBox: Box[A] = either match {
       case Left(err) => Failure(err.fullMsg)
       case Right(x)  => Full(x)
